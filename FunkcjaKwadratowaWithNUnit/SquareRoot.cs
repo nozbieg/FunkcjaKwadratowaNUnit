@@ -8,7 +8,7 @@ namespace FunkcjaKwadratowaWithNUnit
 {
     public class SquareRoot
     {
-        public decimal Root { get; set; }
+        public double Root { get; set; }
 
     }
 }
