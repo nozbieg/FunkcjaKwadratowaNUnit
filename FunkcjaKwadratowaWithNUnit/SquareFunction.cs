@@ -49,7 +49,6 @@ namespace FunkcjaKwadratowaWithNUnit
                     return roots;
                 }
                 return roots;
-
             }
         }
         IList<SquareRoot> CalculateRoots(IList<SquareRoot> roots, int rootCount)
@@ -79,7 +78,7 @@ namespace FunkcjaKwadratowaWithNUnit
             }
             else
             {
-                return null;
+                throw new ArgumentException("This method is dedicated for one square functions. Delta should be equal to 0");
             }
             return root;
         }
@@ -87,20 +86,21 @@ namespace FunkcjaKwadratowaWithNUnit
         public SquareRoot CountRoot(bool operand)
         {
             var root = new SquareRoot();
-            if (Delta != 0)
+            if (Delta != 0 && Delta > 0)
             {
                 if (operand == true)
                 {
-                    root.Root = (-ParameterB + Math.Sqrt(Delta)) / (2 * ParameterA);
+                    root.Root = Math.Round((-ParameterB + Math.Sqrt(Delta)) / (2 * ParameterA), 2);
                 }
                 else
                 {
-                    root.Root = (-ParameterB - Math.Sqrt(Delta)) / (2 * ParameterA);
+                    root.Root = Math.Round((-ParameterB - Math.Sqrt(Delta)) / (2 * ParameterA), 2);
                 }
             }
             else
             {
-                return null;
+                throw new ArgumentException("This method is dedicated for two square functions. Delta should be above 0");
+
             }
             return root;
         }
@@ -117,12 +117,20 @@ namespace FunkcjaKwadratowaWithNUnit
 
         public override string ToString()
         {
-            var returnString = "Function roots are:" + Environment.NewLine;
-            var count = 1;
-            foreach (var root in Roots)
+            var returnString = string.Empty;
+            if (Delta >= 0)
             {
-                returnString += $"Root {count} = {root.Root}" + Environment.NewLine;
-                count++;
+                returnString = "Function roots are:" + Environment.NewLine;
+                var count = 1;
+                foreach (var root in Roots)
+                {
+                    returnString += $"Root {count} = {root.Root}" + Environment.NewLine;
+                    count++;
+                }
+            }
+            else
+            {
+                returnString = "Delta is under 0. There are no roots for this function";
             }
             return returnString;
         }
