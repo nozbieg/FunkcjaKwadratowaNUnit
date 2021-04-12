@@ -131,6 +131,40 @@ namespace nUnitTests
             Assert.AreEqual(squareFunction.Roots[1].Root, resultRoot2, $"The root value should be equal to {resultRoot2}");
         }
 
+        [Test]
+        [TestCase(2, 3, 4)]
+        public void TooString_DeltaNegative_Test(double parameterA, double parameterB, double parameterC)
+        {
+            squareFunction.ParameterA = parameterA;
+            squareFunction.ParameterB = parameterB;
+            squareFunction.ParameterC = parameterC;
 
+            Assert.AreEqual(squareFunction.ToString(), "Delta is under 0. There are no roots for this function", "Result string missmatch for negative delta");
+        }
+
+        [Test]
+        [TestCase(2, 4, 2, -1)]
+        public void TooString_DeltaZero_Test(double parameterA, double parameterB, double parameterC, double resultRoot)
+        {
+            squareFunction.ParameterA = parameterA;
+            squareFunction.ParameterB = parameterB;
+            squareFunction.ParameterC = parameterC;
+
+            Assert.AreEqual(squareFunction.ToString(),
+                "Function roots are:" + Environment.NewLine + "Root 1 = " + resultRoot + Environment.NewLine,
+                "Result string missmatch for delta equal zero");
+        }
+        [Test]
+        [TestCase(2, 8, 1, -0.13, -3.87)]
+        public void TooString_DeltaAboveZero_Test(double parameterA, double parameterB, double parameterC, double resultRoot1, double resultRoot2)
+        {
+            squareFunction.ParameterA = parameterA;
+            squareFunction.ParameterB = parameterB;
+            squareFunction.ParameterC = parameterC;
+
+            Assert.AreEqual(squareFunction.ToString(),
+                "Function roots are:" + Environment.NewLine + "Root 1 = " + resultRoot1 + Environment.NewLine + "Root 2 = " + resultRoot2 + Environment.NewLine,
+                "Result string missmatch for delta above zero");
+        }
     }
 }
