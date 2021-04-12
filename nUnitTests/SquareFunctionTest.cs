@@ -77,6 +77,59 @@ namespace nUnitTests
 
             Assert.AreEqual(delta, result, $"For A:{parameterA},B:{parameterB},C:{parameterC} delta should be equal to {result} ");
         }
+        [Test]
+        public void CountRoot_Delta0_Equal_Test()
+        {
+            squareFunction.ParameterA = 2;
+            squareFunction.ParameterB = 4;
+            squareFunction.ParameterC = 2;
+
+            Assert.DoesNotThrow(() => squareFunction.CountRoot());
+            Assert.AreEqual(squareFunction.Delta, 0, "Delta should be equal to 0");
+            Assert.AreEqual(squareFunction.Roots.Count, 1, "This function should have only one Root");
+            Assert.AreEqual(squareFunction.Roots[0].Root, -1, $"The root value should be equal to -1");
+        }
+        [Test]
+        [TestCase(2, 3, 4)]
+        [TestCase(2, 8, 1)]
+        public void CountRoot_Delta0_WrongDelta_Test(double parameterA, double parameterB, double parameterC)
+        {
+            squareFunction.ParameterA = parameterA;
+            squareFunction.ParameterB = parameterB;
+            squareFunction.ParameterC = parameterC;
+
+            var ex = Assert.Throws<ArgumentException>(() => squareFunction.CountRoot());
+            Assert.That(ex.Message, Is.EqualTo($"This method is dedicated for one square functions. Delta should be equal to 0"));
+        }
+
+        [Test]
+        [TestCase(2, 3, 4)]
+        [TestCase(2, 4, 2)]
+        public void CountRoot_DeltaPositive_WrongDelta_Test(double parameterA, double parameterB, double parameterC)
+        {
+            squareFunction.ParameterA = parameterA;
+            squareFunction.ParameterB = parameterB;
+            squareFunction.ParameterC = parameterC;
+
+            var ex = Assert.Throws<ArgumentException>(() => squareFunction.CountRoot(true));
+            Assert.That(ex.Message, Is.EqualTo($"This method is dedicated for two square functions. Delta should be above 0"));
+        }
+
+        [Test]
+        [TestCase(2, 8, 1, 56, -0.13, -3.87)]
+        public void CountRoot_DeltaPositive_Equal_Test(double parameterA, double parameterB, double parameterC,
+                                                       double resultDelta, double resultRoot1, double resultRoot2)
+        {
+            squareFunction.ParameterA = parameterA;
+            squareFunction.ParameterB = parameterB;
+            squareFunction.ParameterC = parameterC;
+
+            Assert.DoesNotThrow(() => squareFunction.CountRoot(true));
+            Assert.AreEqual(squareFunction.Delta, resultDelta, $"Delta should be equal to {resultDelta}");
+            Assert.AreEqual(squareFunction.Roots.Count, 2, "This function should have two Root");
+            Assert.AreEqual(squareFunction.Roots[0].Root, resultRoot1, $"The root value should be equal to {resultRoot1}");
+            Assert.AreEqual(squareFunction.Roots[1].Root, resultRoot2, $"The root value should be equal to {resultRoot2}");
+        }
 
 
     }
